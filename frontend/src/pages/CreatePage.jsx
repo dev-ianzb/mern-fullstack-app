@@ -6,8 +6,10 @@ import {
   Box,
   Input,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import React from "react";
+import { useProductStore } from "../store/product";
 
 const CreatePage = () => {
   const [newProduct, setNewProduct] = React.useState({
@@ -15,9 +17,28 @@ const CreatePage = () => {
     price: "",
     image: "",
   });
-
-  const handleAddProduct = () => {
-    console.log("New Product:", newProduct);
+  const toast = useToast();
+  const { createProduct } = useProductStore();
+  const handleAddProduct = async () => {
+    const { success, message } = await createProduct(newProduct);
+    if (!success) {
+      toast({
+        title: "Error",
+        description: message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: message,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    setNewProduct({ name: "", price: "", image: "" }); //This is to reset the form after a submission
   };
   return (
     <Container maxW={"container.sm"}>
