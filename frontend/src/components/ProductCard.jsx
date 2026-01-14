@@ -28,13 +28,16 @@ import { useProductStore } from "../store/product";
 const ProductCard = ({ product }) => {
   const textColor = useColorModeValue("gray.600", "gray.200");
   const bg = useColorModeValue("white", "gray.800");
-
-  const { deleteProduct, updateProduct } = useProductStore();
   const toast = useToast();
 
+  // Getting deleteProduct and updateProduct from the store
+  const { deleteProduct, updateProduct } = useProductStore();
+  //
+
+  // FOR UPDATE
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [updatedProduct, setUpdatedProduct] = React.useState(product);
-
+  //
   const handleDeleteProduct = async (pid) => {
     const { success, message } = await deleteProduct(pid);
     if (!success) {
@@ -104,15 +107,20 @@ const ProductCard = ({ product }) => {
         </Text>
 
         <HStack spacing={2}>
+          {/* FOR UPDATE */}
           <IconButton icon={<FaEdit />} colorScheme="blue" onClick={onOpen} />
+          {/* FOR UPDATE */}
+
+          {/* FOR DELETE */}
           <IconButton
             icon={<MdDelete />}
             colorScheme="red"
             onClick={() => handleDeleteProduct(product._id)}
           />
+          {/* FOR DELETE */}
         </HStack>
       </Box>
-
+      {/* FOR UPDATE */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
 
@@ -169,6 +177,7 @@ const ProductCard = ({ product }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      {/* FOR UPDATE */}
     </Box>
   );
 };
